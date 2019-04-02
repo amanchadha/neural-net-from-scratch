@@ -15,6 +15,16 @@ __website__     = "www.amanchadha.com"
 
 import numpy as np
 
+##################### HYPERPARAMETERS OF THE NEURAL NET #####################
+nX              = 2  # No. of neurons in first layer
+nH              = 2  # No. of neurons in hidden layer
+nY              = 1  # No. of neurons in output layer
+NUM_ITER        = 1000
+LEARNING_RATE   = 0.3
+#############################################################################
+TEST_DATASET    = ((0, 0), (0, 1), (1, 0), (1, 1))
+#############################################################################
+
 def sigmoid(z):
     return 1/(1 + np.exp(-z))
 
@@ -88,13 +98,13 @@ def updateParameters(parameters, gradients, learningRate):
     new_parameters = {
         "W1": W1,
         "W2": W2,
-        "b1" : b1,
-        "b2" : b2
+        "b1": b1,
+        "b2": b2
     }
 
     return new_parameters
 
-def model(X, Y, nX, nH, nY, numIter, learningRate, m):
+def trainNeuralNet(X, Y, nX, nH, nY, numIter, learningRate, m):
     parameters = initializeParameters(nX, nH, nY)
 
     for i in range(0, numIter+1):
@@ -118,6 +128,16 @@ def predict(X, parameters):
     yPredict = 1 if yHat >= 0.5 else 0
 
     return yPredict
+
+def testNeuralNet(trainedParameters):
+    # Test 2x1 vector to calculate the XOR of its elements
+    # Try (0, 0), (0, 1), (1, 0), (1, 1)
+    for (i, y) in TEST_DATASET:
+        XTest = np.array([[i], [y]])
+
+        YPredict = predict(XTest, trainedParameters)
+
+        print('Neural Network prediction for example ({:d}, {:d}) is {:d}'.format(XTest[0][0], XTest[1][0], YPredict))
     
 def main():
     np.random.seed(2)
@@ -131,22 +151,14 @@ def main():
     # No. of training examples
     m = X.shape[1]
 
-    # Set the hyperparameters of the neural net
-    nX = 2     #No. of neurons in first layer
-    nH = 2     #No. of neurons in hidden layer
-    nY = 1     #No. of neurons in output layer
-    numIter = 1000
-    learningRate = 0.3
+    print "*"*50
+    print "Training Neural Net"
+    print "*"*50
+    trainedParameters = trainNeuralNet(X, Y, nX, nH, nY, NUM_ITER, LEARNING_RATE, m)
 
-    trainedParameters = model(X, Y, nX, nH, nY, numIter, learningRate, m)
-
-    # Test 2x1 vector to calculate the XOR of its elements
-    # Try (0, 0), (0, 1), (1, 0), (1, 1)
-    for (i, y) in ((0, 0), (0, 1), (1, 0), (1, 1)):
-        XTest = np.array([[i], [y]])
-
-        YPredict = predict(XTest, trainedParameters)
-
-        print('Neural Network prediction for example ({:d}, {:d}) is {:d}'.format(XTest[0][0], XTest[1][0], YPredict))
+    print "*"*50
+    print "Testing Neural Net"
+    print "*"*50
+    testNeuralNet(trainedParameters)
 
 if __name__ == "__main__": main()
