@@ -80,7 +80,6 @@ def backwardProp(X, Y, cache, parameters, m):
     return gradients
 
 def updateParameters(parameters, gradients, learningRate):
-
     W1 = parameters["W1"] - learningRate*gradients["dW1"]
     b1 = parameters["b1"] - learningRate*gradients["db1"]
     W2 = parameters["W2"] - learningRate*gradients["dW2"]
@@ -116,10 +115,7 @@ def predict(X, parameters):
     yHat, cache = forwardProp(X, parameters)
     yHat = np.squeeze(yHat)
 
-    if(yHat >= 0.5):
-        yPredict = 1
-    else:
-        yPredict = 0
+    yPredict = 1 if yHat >= 0.5 else 0
 
     return yPredict
     
