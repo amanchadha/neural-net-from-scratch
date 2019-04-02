@@ -140,7 +140,7 @@ def main():
 
     trainedParameters = model(X, Y, nX, nH, nY, numIter, learningRate, m)
 
-    # Test 2x1 vector to calculate the XOR of its elements.
+    # Test 2x1 vector to calculate the XOR of its elements
     # Try (0, 0), (0, 1), (1, 0), (1, 1)
     for (i, y) in ((0, 0), (0, 1), (1, 0), (1, 1)):
         XTest = np.array([[i], [y]])
